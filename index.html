@@ -4,7 +4,7 @@
   <head>
     <meta charset='utf-8' />
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Memprof : A memory profiler for Python. As easy as adding a decorator!" />
+    <meta name="description" content="Memprof : A memory profiler for Python" />
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
@@ -19,7 +19,7 @@
           <a id="forkme_banner" href="https://github.com/jmdana/memprof">View on GitHub</a>
 
           <h1 id="project_title">Memprof</h1>
-          <h2 id="project_tagline">A memory profiler for Python. As easy as adding a decorator!</h2>
+          <h2 id="project_tagline">A memory profiler for Python</h2>
 
             <section id="downloads">
               <a class="zip_download_link" href="https://github.com/jmdana/memprof/zipball/master">Download this project as a .zip file</a>
@@ -31,23 +31,18 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <h1>
-<a name="memprof" class="anchor" href="#memprof"><span class="octicon octicon-link"></span></a>memprof</h1>
+        <p><code>memprof</code> logs and plots the memory usage of all the variables during the execution of the decorated methods.</p>
 
-<p><code>memprof</code> is a memory profiler for Python. </p>
-
-<p>It logs and plots the memory usage of all the variables during the execution of the decorated methods.</p>
-
-<h2>
-<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+<h1>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h1>
 
 <pre><code>git clone git://github.com/jmdana/memprof.git
 cd memprof
 sudo python setup.py install
 </code></pre>
 
-<h2>
-<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+<h1>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h1>
 
 <p>Using <code>memprof</code> is as easy as adding a decorator to the methods that you want to profile:</p>
 
@@ -62,8 +57,8 @@ def foo():
 
 <p>Now you can run as usual and logfiles with the names of your methods will be created (e.g. <code>foo.log</code>).</p>
 
-<h3>
-<a name="generating-plots" class="anchor" href="#generating-plots"><span class="octicon octicon-link"></span></a>Generating plots</h3>
+<h2>
+<a name="generating-plots" class="anchor" href="#generating-plots"><span class="octicon octicon-link"></span></a>Generating plots</h2>
 
 <p>The logfiles are not very interesting so you might prefer to use the <code>-p</code>/<code>--plot</code> flag:</p>
 
@@ -84,8 +79,8 @@ python -m memprof -p &lt;python_file&gt;
 
 <p>Please keep in mind that the former takes precedence over the latter.</p>
 
-<h3>
-<a name="adjusting-the-threshold" class="anchor" href="#adjusting-the-threshold"><span class="octicon octicon-link"></span></a>Adjusting the threshold</h3>
+<h2>
+<a name="adjusting-the-threshold" class="anchor" href="#adjusting-the-threshold"><span class="octicon octicon-link"></span></a>Adjusting the threshold</h2>
 
 <p>You may also want to specify a <code>threshold</code>. The value will be the minimum size for a variable to appear in the plot (but it will always appear in the logfile!). The default value is 1048576 (1 MB) but you can specify a different <code>threshold</code> (in bytes) with the <code>-t</code>/<code>--threshold</code> flag:</p>
 
@@ -100,8 +95,8 @@ python -m memprof -t 1024 &lt;python_file&gt;
 
 <p>Please keep in mind that the former takes precedence over the latter.    </p>
 
-<h3>
-<a name="mp_plot" class="anchor" href="#mp_plot"><span class="octicon octicon-link"></span></a>mp_plot</h3>
+<h2>
+<a name="mp_plot" class="anchor" href="#mp_plot"><span class="octicon octicon-link"></span></a>mp_plot</h2>
 
 <p>If, after running <code>memprof</code>, you want to change the threshold and generate a new plot (or you forgot to use the <code>-p</code>/<code>--plot</code> flag with <code>memprof</code>), you don't have to re-run! Just call the command:</p>
 
