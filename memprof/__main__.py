@@ -1,0 +1,3 @@
+import memprof
+
+memprof.main()
