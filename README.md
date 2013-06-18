@@ -5,7 +5,15 @@
 It logs and plots the memory usage of all the variables during the execution of the decorated methods.
 
 ## Installation
+### Stable
+    sudo pip install memprof
+    
+or
 
+    sudo easy_install memprof
+    
+### Development
+    
     git clone git://github.com/jmdana/memprof.git
     cd memprof
     sudo python setup.py install
