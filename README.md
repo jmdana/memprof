@@ -79,6 +79,13 @@ or:
     
 etc.
 
+## Contact
+
+### Mailing list
+
+* Subscribe by sending a message to <memprof+subscribe@googlegroups.com>
+* Once subscribed, you can send emails to <memprof@googlegroups.com>
+* List archives at http://groups.google.com/group/memprof
 
 ---
 Copyright 2013, Jose M. Dana
