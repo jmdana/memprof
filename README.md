@@ -6,11 +6,11 @@ It logs and plots the memory usage of all the variables during the execution of 
 
 ## Installation
 ### Stable
-    sudo pip install memprof
+    sudo pip install --upgrade memprof
     
 or
 
-    sudo easy_install memprof
+    sudo easy_install --upgrade memprof
     
 ### Development
     
