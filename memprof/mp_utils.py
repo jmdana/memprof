@@ -70,7 +70,7 @@ def gen_chart(logfile, threshold):
   if not cache.items():
     print("\nNothing with more than %.2f %ss found!" % (threshold / factor,units))
     print("There is nothing to plot... Exiting")
-    sys.exit(1)
+    return
 
   for item,val in cache.items():
     # len(s) == len(t) has to be true
