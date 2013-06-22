@@ -16,7 +16,7 @@ else:
   builtin = (int,float,long,str,complex)
 
 def isInteresting(x):
-  if isinstance(x,(io.IOBase,type(None),MemProfID,types.ModuleType,types.FunctionType,types.MethodType,types.GetSetDescriptorType)):
+  if isinstance(x,(io.IOBase,type(None),MemProfID,types.ModuleType,types.FunctionType,types.MethodType,types.GetSetDescriptorType,types.GeneratorType,types.LambdaType)):
     return False
   return True
 
