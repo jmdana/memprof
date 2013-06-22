@@ -81,6 +81,13 @@ def gen_chart(logfile, threshold):
   hl = sorted(zip(handles, labels),key=operator.itemgetter(1))
   handles, labels = zip(*hl)
 
+  maxy = max(map(max,cache.values()))
+  gapy = (maxy - threshold/factor)/40
+  ax.set_ylim(max(0,threshold/factor - gapy),maxy + gapy)
+  
+  gapx = (times[-1] - times[0])/40
+  ax.set_xlim(times[0],times[-1] + gapx)
+  
   plt.legend(handles,labels)
   
   box = ax.get_position()
