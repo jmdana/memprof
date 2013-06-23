@@ -36,7 +36,7 @@ def getSize(x):
   # Go through iterables skipping strings (and files, thanks to isInteresting)
   elif hasattr(x, '__iter__'):
     for item in x:
-      if hasattr(item, '__iter__') and isInteresting(item):
+      if not isinstance(item,builtin) and isInteresting(item):
         size += getSize(item)
           
   return size
@@ -102,10 +102,7 @@ def memprof(*args, **kwargs):
      
       self.__log.write("%f\n" % from_start)
       
-      for item, value in self.__locals.items():
-        if not isInteresting(value):
-          continue
-        
+      for item, value in filter(lambda x: isInteresting(x[1]),self.__locals.items()):          
         size = getSize(value)
 
         self.__log.write("%s\t%d\n" % (item,size))
