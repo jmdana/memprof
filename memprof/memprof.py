@@ -20,7 +20,10 @@ def isInteresting(x):
     return False
   return True
 
-def getSize(x):    
+def getSize(x, ids = None):    
+  if not ids:
+    ids = []
+
   try:
     return x.nbytes
   except:
@@ -31,14 +34,18 @@ def getSize(x):
 
   # Go through objects (avoiding modules, MemProf, functions and methods thanks to isInteresting)
   if isinstance(x,object) and hasattr(x,"__dict__"):
-    size += sum(map(getSize,filter(isInteresting,x.__dict__.values())))
-    
+    for item in filter(isInteresting,x.__dict__.values()):
+      if id(item) not in ids:
+        ids.append(id(item))
+        size += getSize(item,ids)
+  
   # Go through iterables skipping strings (and files, thanks to isInteresting)
   elif hasattr(x, '__iter__'):
     for item in x:
-      if not isinstance(item,builtin) and isInteresting(item):
-        size += getSize(item)
-          
+      if not isinstance(item,builtin) and id(item) not in ids and isInteresting(item):
+        ids.append(id(item))
+        size += getSize(item,ids)
+                    
   return size
   
 class MemProfID():
@@ -187,13 +194,17 @@ def main():
     sys.exit(1)
     
   __file__ = sys.argv[0]
-    
-  ns = copy.copy(locals())
-  
-  ns["memprof_charts"] = args.plot
-  ns["memprof_threshold"] = args.threshold
       
-  execfile(__file__, ns, ns)
+  ns_globals = {}
+  ns_globals["memprof_charts"] = args.plot
+  ns_globals["memprof_threshold"] = args.threshold
+  
+  if PY3:
+    with open(__file__) as f:
+      code = compile(f.read(), __file__, 'exec')
+      exec(code, ns_globals)
+  else:    
+    execfile(__file__, ns_globals)
   
 if __name__ == '__main__':    
   main()
