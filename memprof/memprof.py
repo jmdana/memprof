@@ -13,40 +13,49 @@ from .mp_utils import *
 if PY3:
   builtin = (int,float,str,complex)
 else:
-  builtin = (int,float,long,str,complex)
+  builtin = (int,float,str,long,complex)
 
 def isInteresting(x):
-  if isinstance(x,(io.IOBase,type(None),MemProfID,types.ModuleType,types.FunctionType,types.MethodType,types.GetSetDescriptorType,types.GeneratorType,types.LambdaType)):
+  if isinstance(x,(types.ModuleType,types.FunctionType,types.LambdaType,io.IOBase,type(None),MemProfID,types.MethodType,types.GetSetDescriptorType,types.GeneratorType)) or x in builtin:
     return False
   return True
 
-def getSize(x, ids = None):    
-  if not ids:
-    ids = []
+def getSize(x):    
+  ids = set()
 
-  try:
-    return x.nbytes
-  except:
-    size = sys.getsizeof(x)
+  def sizeof(x):
+    if id(x) in ids:
+      return 0
+      
+    ids.add(id(x))
 
-  if isinstance(x,builtin):
-    return size
+    try:
+      nbytes = x.nbytes
+      return nbytes if isinstance(nbytes,int) else 0
+    except:
+      size = sys.getsizeof(x)
 
-  # Go through objects (avoiding modules, MemProf, functions and methods thanks to isInteresting)
-  if isinstance(x,object) and hasattr(x,"__dict__"):
-    for item in filter(isInteresting,x.__dict__.values()):
-      if id(item) not in ids:
-        ids.append(id(item))
-        size += getSize(item,ids)
+    if isinstance(x,builtin):
+      return size
+
+    items = []
   
-  # Go through iterables skipping strings (and files, thanks to isInteresting)
-  elif hasattr(x, '__iter__'):
-    for item in x:
-      if not isinstance(item,builtin) and id(item) not in ids and isInteresting(item):
-        ids.append(id(item))
-        size += getSize(item,ids)
+    # Go through objects (avoiding modules, MemProf, functions and methods thanks to isInteresting)
+    if isinstance(x,object) and hasattr(x,"__dict__"):
+      items = x.__dict__.values()
+    elif isinstance(x,dict):
+      items = x.values()
+    # Go through iterables skipping strings (and files, thanks to isInteresting)
+    elif hasattr(x, '__iter__'):
+      items = x
+    
+      
+    for it in items:
+      if not isinstance(it,builtin) and isInteresting(it):
+        size += sizeof(it)
                     
-  return size
+    return size
+  return sizeof(x)
   
 class MemProfID():
   pass
@@ -110,6 +119,7 @@ def memprof(*args, **kwargs):
       self.__log.write("%f\n" % from_start)
       
       for item, value in filter(lambda x: isInteresting(x[1]),self.__locals.items()):          
+        # print("%s looks interesting" % item)
         size = getSize(value)
 
         self.__log.write("%s\t%d\n" % (item,size))
