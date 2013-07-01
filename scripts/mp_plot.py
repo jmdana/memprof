@@ -21,7 +21,7 @@ if __name__ == '__main__':
   for logfile in args.logfiles:
     print("Processing %s with threshold = %.2f %s" % (logfile, args.threshold / factor, units))
     try:
-      gen_chart(logfile,args.threshold)
+      gen_plot(logfile,args.threshold)
     except IOError as e:
       print(e)
     

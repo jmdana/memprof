@@ -46,7 +46,7 @@ The grey bar indicates that the `foo` method wasn't running at that point.
 
 The flag may also be passed as an argument to the decorator:
 
-    @memprof(charts = True)
+    @memprof(plot = True)
 
 Please keep in mind that the former takes precedence over the latter.
 

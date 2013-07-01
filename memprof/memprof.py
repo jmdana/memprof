@@ -16,7 +16,7 @@ else:
   builtin = (int,float,str,long,complex)
 
 def isInteresting(x):
-  if isinstance(x,(types.ModuleType,types.FunctionType,types.LambdaType,io.IOBase,type(None),MemProfID,types.MethodType,types.GetSetDescriptorType,types.GeneratorType)) or x in builtin:
+  if isinstance(x,(types.ModuleType,types.FunctionType,types.LambdaType,io.IOBase,type(None),MemProf,types.MethodType,types.GetSetDescriptorType,types.GeneratorType,types.BuiltinFunctionType,types.BuiltinMethodType)) or x in builtin:
     return False
   return True
 
@@ -56,138 +56,135 @@ def getSize(x):
                     
     return size
   return sizeof(x)
-  
-class MemProfID():
-  pass
-  
+
 def memprof(*args, **kwargs):
-  class MemProf(MemProfID):
-    def __init__(self,func,threshold = default_threshold, charts = False):      
-      self.func = func
-      self.__locals = {}
-      self.__start = -1
-      self.__prev = -1
-      self.__cache = {}
-      self.__refresh = 500000
-      self.__ticks = 0
-      self.__checkTimes = []
-      self.__logfile = "%s.log" % self.func.__name__
-      
-      self.__charts = self.func.__globals__["memprof_charts"]  if "memprof_charts" in self.func.__globals__ else charts
-      self.threshold = self.func.__globals__["memprof_threshold"]  if "memprof_threshold" in self.func.__globals__ else threshold
-                
-      self.__units,self.__factor = get_units_factor(self.threshold)
-                          
-      self.__log = None
-    
-    def __get__(self, obj, type=None):
-      if obj is None:
-        func = self.func
-        if not hasattr(func, "__call__"):
-          self.func = func.__get__(None, ownerClass)
-          return self
-      else:
-        # Return a wrapper that binds self as a method of obj (!)
-        return types.MethodType(self, obj)
-      
-    def tracer(self,frame, event, arg):
-      if event not in ["line", "call", "return"]:
-        return 
-
-      self.__ticks += 1
-            
-      if (event in ["call","return"] and frame.f_code.co_name == self.func.__name__) or self.__ticks >= self.__refresh:
-        self.__ticks = 0
-        self.__locals = dict(list(frame.f_locals.items()) + list(frame.f_globals.items()))
-        self.checkMem()
-      
-      return self.tracer
-      
-    def checkMem(self):
-      now = time.time()
-    
-      self.__prev,elapsed = now, now - self.__prev
-      from_start = now - self.__start
-      
-      print("\n")
-      print("*" * 12)
-      print("%ds (+%ds)" % (from_start,elapsed))
-      print("*" * 12)
-      
-      self.__checkTimes.append(from_start)
-     
-      self.__log.write("%f\n" % from_start)
-      
-      for item, value in filter(lambda x: isInteresting(x[1]),self.__locals.items()):          
-        # print("%s looks interesting" % item)
-        size = getSize(value)
-
-        self.__log.write("%s\t%d\n" % (item,size))
-        
-        if size > self.threshold:
-          size /= self.__factor
-        
-          try:
-            prev = self.__cache[item][-1]
-          except (IndexError,KeyError) as e:
-            prev = 0
-          
-          self.__cache.setdefault(item,[]).append(size)
-          
-          if len(self.__cache[item]) < len(self.__checkTimes):
-            self.__cache[item][-1:-1] = [0] * (len(self.__checkTimes) - len(self.__cache[item]))
-                
-          print("%s: %.2f %s%s" % (item, size, self.__units, "\t(%s%.2f %s)" % ("+" if size-prev > 0 else "", size-prev, self.__units) if prev > 0 else ""))
-    
-    def __call__(self,*args, **kwargs):
-      print("memprof starting (min. size: %d)" % (self.threshold))
-
-      if self.__start == -1:
-        self.__prev = self.__start = time.time()
-        self.__log = open(self.__logfile,"w")
-      else:
-        self.__log = open(self.__logfile,"a")
-        
-        self.__checkTimes.append(self.__prev - self.__start + 0.00000001)
-        self.__log.write("%f\n" % (self.__prev - self.__start + 0.00000001))
-        
-        self.__checkTimes.append(time.time() - self.__start)
-        self.__log.write("%f\n" % (time.time() - self.__start))
-        
-        self.__log.write("RESTART\n")
-        
-        for key in self.__cache.keys():
-          self.__cache[key].append(0)
-          self.__cache[key].append(0)
-                        
-      curr_tracer = sys.gettrace()
-      sys.settrace(self.tracer)      
-      
-      res = self.func(*args, **kwargs)
-
-      sys.settrace(curr_tracer)
-      
-      self.__log.close()
-      self.__ticks = 0    
-      
-      if self.__charts:
-        gen_chart(self.__logfile,self.threshold)
-                
-      print("memprof done")
-      
-      return res
-      
-            
   def inner(func):    
     return MemProf(func, *args, **kwargs)
   
-  # To allow @memprof 
+  # To allow @memprof with parameters
   if len(args) and callable(args[0]):
     func = args[0]
     args = args[1:]
     return inner(func)
   else:
     return inner
+  
+  
+class MemProf(object):
+  def __init__(self,func,threshold = default_threshold, plot = False):      
+    self.func = func
+    self.__locals = {}
+    self.__start = -1
+    self.__prev = -1
+    self.__cache = {}
+    self.__refresh = 500000
+    self.__ticks = 0
+    self.__checkTimes = []
+    self.__logfile = "%s.log" % self.func.__name__
+    
+    self.__plot = self.func.__globals__["memprof_plot"]  if "memprof_plot" in self.func.__globals__ else plot
+    self.threshold = self.func.__globals__["memprof_threshold"]  if "memprof_threshold" in self.func.__globals__ else threshold
+              
+    self.__units,self.__factor = get_units_factor(self.threshold)
+                        
+    self.__log = None
+
+  def __get__(self, obj, type=None):
+    if obj is None:
+      func = self.func
+      if not hasattr(func, "__call__"):
+        self.func = func.__get__(None, ownerClass)
+        return self
+    else:
+      # Return a wrapper that binds self as a method of obj (!)
+      return types.MethodType(self, obj)
+    
+  def tracer(self,frame, event, arg):
+    if event not in ["line", "call", "return"]:
+      return 
+
+    self.__ticks += 1
+          
+    if (event in ["call","return"] and frame.f_code.co_name == self.func.__name__) or self.__ticks >= self.__refresh:
+      self.__ticks = 0
+      self.__locals = dict(list(frame.f_locals.items()) + list(frame.f_globals.items()))
+      del self.__locals['__builtins__']
+      self.checkMem()
+    
+    return self.tracer
+    
+  def checkMem(self):
+    now = time.time()
+  
+    self.__prev,elapsed = now, now - self.__prev
+    from_start = now - self.__start
+    
+    print("\n")
+    print("*" * 12)
+    print("%ds (+%ds)" % (from_start,elapsed))
+    print("*" * 12)
+    
+    self.__checkTimes.append(from_start)
+   
+    self.__log.write("%f\n" % from_start)
+    
+    for item, value in filter(lambda x: isInteresting(x[1]),self.__locals.items()):          
+      size = getSize(value)
+
+      self.__log.write("%s\t%d\n" % (item,size))
+      
+      if size > self.threshold:
+        size /= self.__factor
+      
+        try:
+          prev = self.__cache[item][-1]
+        except (IndexError,KeyError) as e:
+          prev = 0
+        
+        self.__cache.setdefault(item,[]).append(size)
+        
+        if len(self.__cache[item]) < len(self.__checkTimes):
+          self.__cache[item][-1:-1] = [0] * (len(self.__checkTimes) - len(self.__cache[item]))
+              
+        print("%s: %.2f %s%s" % (item, size, self.__units, "\t(%s%.2f %s)" % ("+" if size-prev > 0 else "", size-prev, self.__units) if prev > 0 else ""))
+  
+  def __call__(self,*args, **kwargs):
+    print("memprof starting (min. size: %d)" % (self.threshold))
+
+    if self.__start == -1:
+      self.__prev = self.__start = time.time()
+      self.__log = open(self.__logfile,"w")
+    else:
+      self.__log = open(self.__logfile,"a")
+      
+      self.__checkTimes.append(self.__prev - self.__start + 0.00000001)
+      self.__log.write("%f\n" % (self.__prev - self.__start + 0.00000001))
+      
+      self.__checkTimes.append(time.time() - self.__start)
+      self.__log.write("%f\n" % (time.time() - self.__start))
+      
+      self.__log.write("RESTART\n")
+      
+      for key in self.__cache.keys():
+        self.__cache[key].append(0)
+        self.__cache[key].append(0)
+                      
+    curr_tracer = sys.gettrace()
+    sys.settrace(self.tracer)      
+    
+    res = self.func(*args, **kwargs)
+
+    sys.settrace(curr_tracer)
+    
+    self.__log.close()
+    self.__ticks = 0    
+    
+    if self.__plot:
+      gen_plot(self.__logfile,self.threshold)
+              
+    print("memprof done")
+    
+    return res
 
 def main():
   parser = argparse.ArgumentParser()
@@ -206,7 +203,7 @@ def main():
   __file__ = sys.argv[0]
       
   ns_globals = {}
-  ns_globals["memprof_charts"] = args.plot
+  ns_globals["memprof_plot"] = args.plot
   ns_globals["memprof_threshold"] = args.threshold
   
   if PY3:

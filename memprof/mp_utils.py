@@ -25,7 +25,7 @@ def get_units_factor(threshold):
   else:
     return ("GB",GB)
     
-def gen_chart(logfile, threshold):
+def gen_plot(logfile, threshold):
   cache = {}
   times = []
   
