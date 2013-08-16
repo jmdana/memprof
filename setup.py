@@ -27,7 +27,7 @@ setup(
   keywords = "memory usage profiler decorator variables charts plots graphical",
   url = "http://jmdana.github.io/memprof/",
   packages=['memprof'],
-  scripts=['scripts/mp_plot.py'],
+  scripts=['scripts/mp_plot'],
   cmdclass = {'install_scripts': md_install_scripts},
   zip_safe=False,
   long_description=read('README.md'),
@@ -58,7 +58,7 @@ setup(
 
 print("\n\n")
 print("*" * 80)
-print("mp_plot.py has been copied to:\n\n%s\n\nPlease make sure that it is included in your PATH." % install_scripts_dest)
+print("mp_plot has been copied to:\n\n%s\n\nPlease make sure that it is included in your PATH." % install_scripts_dest)
 print("*" * 80)
 print("\n\n")
 
