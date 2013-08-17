@@ -114,17 +114,17 @@ python -m memprof -t 1024 &lt;python_file&gt;
 
 <p>If, after running <code>memprof</code>, you want to change the threshold and generate a new plot (or you forgot to use the <code>-p</code>/<code>--plot</code> flag with <code>memprof</code>), you don't have to re-run! Just call the command:</p>
 
-<pre><code>mp_plot.py [-h] [-t THRESHOLD] logfiles [logfiles ...]
+<pre><code>mp_plot [-h] [-t THRESHOLD] logfiles [logfiles ...]
 </code></pre>
 
 <p>and generate the plots again doing something like:</p>
 
-<pre><code>mp_plot.py -t 128 logfile1.log logfile2.log   
+<pre><code>mp_plot -t 128 logfile1.log logfile2.log   
 </code></pre>
 
 <p>or:</p>
 
-<pre><code>mp_plot.py -t 1024 *.log
+<pre><code>mp_plot -t 1024 *.log
 </code></pre>
 
 <p>etc.</p>
