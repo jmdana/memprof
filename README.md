@@ -67,15 +67,15 @@ Please keep in mind that the former takes precedence over the latter.
 
 If, after running `memprof`, you want to change the threshold and generate a new plot (or you forgot to use the `-p`/`--plot` flag with `memprof`), you don't have to re-run! Just call the command:
     
-    mp_plot.py [-h] [-t THRESHOLD] logfiles [logfiles ...]
+    mp_plot [-h] [-t THRESHOLD] logfiles [logfiles ...]
     
 and generate the plots again doing something like:
 
-    mp_plot.py -t 128 logfile1.log logfile2.log   
+    mp_plot -t 128 logfile1.log logfile2.log
     
 or:
  
-    mp_plot.py -t 1024 *.log
+    mp_plot -t 1024 *.log
     
 etc.
 
