@@ -87,9 +87,10 @@ setup(
   test_suite = "testsuite",
 )
 
-print("\n\n")
-print("*" * 80)
-print("mp_plot has been copied to:\n\n%s\n\nPlease make sure that it is included in your PATH." % install_scripts_dest)
-print("*" * 80)
-print("\n\n")
+if 'install' in sys.argv:
+  print("\n\n")
+  print("*" * 80)
+  print("mp_plot has been copied to:\n\n%s\n\nPlease make sure that it is included in your PATH." % install_scripts_dest)
+  print("*" * 80)
+  print("\n\n")
 
