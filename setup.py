@@ -36,7 +36,7 @@ class md_install_scripts(install_scripts):
 
 setup(
   name = "memprof",
-  version = "0.2.3",
+  version = "0.2.4",
   author = "Jose M. Dana",
   description = ("A memory profiler for Python. As easy as adding a decorator."),
   license = "GNU General Public License v3 (GPLv3)",
