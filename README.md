@@ -11,7 +11,11 @@ It logs and plots the memory usage of all the variables during the execution of 
 or
 
     sudo easy_install --upgrade memprof
-    
+ 
+or (Debian testing/unstable)
+
+    sudo apt-get install python-memprof
+       
 ### Development
     
     git clone git://github.com/jmdana/memprof.git
