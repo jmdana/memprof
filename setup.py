@@ -15,9 +15,13 @@
 # along with memprof.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-from setuptools import setup
+from setuptools import setup, Extension
 import sys
 from distutils.command.install_scripts import install_scripts
+from Cython.Distutils import build_ext
+
+getsize = Extension('memprof.getsize',
+    sources = ['memprof/getsize.pyx'])
 
 install_scripts_dest = "%s/bin" % sys.prefix
 
@@ -44,7 +48,7 @@ setup(
   url = "http://jmdana.github.io/memprof/",
   packages=['memprof'],
   scripts=['scripts/mp_plot'],
-  cmdclass = {'install_scripts': md_install_scripts},
+  cmdclass = {'install_scripts': md_install_scripts, 'build_ext': build_ext},
   zip_safe=False,
   long_description=read('README.md'),
   classifiers=[
@@ -67,7 +71,8 @@ setup(
       "Intended Audience :: Science/Research",
       "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
   ],
-  requires=['argparse','matplotlib'],
+  ext_modules=[getsize],
+  requires=['argparse','matplotlib','cython'],
   install_requires=['argparse','matplotlib'],
   provides=['memprof'],
 )
