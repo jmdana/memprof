@@ -40,7 +40,7 @@ class md_install_scripts(install_scripts):
 
 setup(
   name = "memprof",
-  version = "0.2.4",
+  version = "0.3",
   author = "Jose M. Dana",
   description = ("A memory profiler for Python. As easy as adding a decorator."),
   license = "GNU General Public License v3 (GPLv3)",
@@ -73,7 +73,7 @@ setup(
   ],
   ext_modules=[getsize],
   requires=['argparse','matplotlib','cython'],
-  install_requires=['argparse','matplotlib'],
+  install_requires=['argparse','matplotlib','cython'],
   provides=['memprof'],
 )
 
