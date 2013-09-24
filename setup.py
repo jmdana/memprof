@@ -18,7 +18,16 @@ import os
 from setuptools import setup, Extension
 import sys
 from distutils.command.install_scripts import install_scripts
-from Cython.Distutils import build_ext
+
+try:
+  from Cython.Distutils import build_ext
+except ImportError:
+  from setuptools.command import easy_install
+  import pkg_resources
+  # Install cython
+  easy_install.main(["Cython"])
+  pkg_resources.require("Cython")
+  from Cython.Distutils import build_ext
 
 getsize = Extension('memprof.getsize',
     sources = ['memprof/getsize.pyx'])
@@ -40,7 +49,7 @@ class md_install_scripts(install_scripts):
 
 setup(
   name = "memprof",
-  version = "0.3",
+  version = "0.3.1",
   author = "Jose M. Dana",
   description = ("A memory profiler for Python. As easy as adding a decorator."),
   license = "GNU General Public License v3 (GPLv3)",
