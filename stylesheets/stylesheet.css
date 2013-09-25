@@ -327,6 +327,22 @@ Full-Width Styles
   background: url('../images/icon_download.png') no-repeat 0% 90%;
 }
 
+#pypi {
+  z-index: 10;
+}
+
+#pypi img {
+  padding: 0px;
+  margin: 0 0 0 0;
+  border: 0px;
+
+  box-shadow: 0 0 0;
+  -webkit-box-shadow: 0 0 0;
+  -moz-box-shadow: 0 0 0;
+  -o-box-shadow: 0 0 0;
+  -ms-box-shadow: 0 0 0;
+}
+
 .zip_download_link {
   display: block;
   float: right;
