@@ -84,6 +84,7 @@ setup(
   requires=['argparse','matplotlib','cython'],
   install_requires=['argparse','matplotlib','cython'],
   provides=['memprof'],
+  test_suite = "memprof.Test",
 )
 
 print("\n\n")
