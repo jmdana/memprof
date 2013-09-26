@@ -1,4 +1,3 @@
-
 import types
 import io
 import memprof
@@ -11,7 +10,7 @@ else:
 
 
 def isInteresting(x):
-  if isinstance(x,(types.ModuleType,types.FunctionType,types.LambdaType,io.IOBase,type(None),memprof.MemProf,types.MethodType,types.GetSetDescriptorType,types.GeneratorType,types.BuiltinFunctionType,types.BuiltinMethodType)) or x in builtin:
+  if isinstance(x,(types.ModuleType,types.FunctionType,types.LambdaType,io.IOBase,type(None),memprof.MemProf,types.MethodType,types.GetSetDescriptorType,types.GeneratorType,types.BuiltinFunctionType,types.BuiltinMethodType,file)) or x in builtin:
     return False
   return True
 
