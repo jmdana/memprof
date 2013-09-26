@@ -25,6 +25,7 @@ import types
 
 from .mp_utils import *
 from .getsize import getSize, isInteresting
+from .test import Test
 
 def memprof(*args, **kwargs):
   def inner(func):    
