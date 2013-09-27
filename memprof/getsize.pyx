@@ -9,9 +9,10 @@ if PY3:
 else:
   builtin = (int,float,str,long,complex)
 
+notinteresting = (types.ModuleType,types.FunctionType,types.LambdaType,io.IOBase,type(None),types.MethodType,types.GetSetDescriptorType,types.GeneratorType,types.BuiltinFunctionType,types.BuiltinMethodType,builtin)
 
 def isInteresting(x):
-  if isinstance(x,(types.ModuleType,types.FunctionType,types.LambdaType,io.IOBase,type(None),memprof.MemProf,types.MethodType,types.GetSetDescriptorType,types.GeneratorType,types.BuiltinFunctionType,types.BuiltinMethodType)) or x in builtin:
+  if isinstance(x,notinteresting) or isinstance(x,memprof.MemProf):
     return False
   return True
 
@@ -24,11 +25,11 @@ def getSize(x):
       
     ids.add(id(x))
 
-    try:
+    if hasattr(x,"nbytes"):
       nbytes = x.nbytes
       return nbytes if isinstance(nbytes,int) else 0
-    except:
-      size = sys.getsizeof(x)
+    
+    size = sys.getsizeof(x)
 
     if isinstance(x,builtin):
       return size
@@ -36,7 +37,7 @@ def getSize(x):
     items = []
   
     # Go through objects (avoiding modules, MemProf, functions and methods thanks to isInteresting)
-    if isinstance(x,object) and hasattr(x,"__dict__"):
+    if hasattr(x,"__dict__"):
       items = x.__dict__.values()
     elif isinstance(x,dict):
       items = x.values()
