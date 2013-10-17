@@ -78,6 +78,12 @@ class MemProf(object):
       self.__ticks = 0
       self.__locals = dict(list(frame.f_locals.items()) + list(frame.f_globals.items()))
       del self.__locals['__builtins__']
+      del self.__locals['__file__']
+      del self.__locals['__loader__']
+      del self.__locals['__cached__']
+      del self.__locals['__package__']
+      del self.__locals['__doc__']
+      del self.__locals['__name__']
       self.checkMem()
     
     return self.tracer
@@ -97,7 +103,7 @@ class MemProf(object):
    
     self.__log.write("%f\n" % from_start)
     
-    for item, value in filter(lambda x: isInteresting(x[1]),self.__locals.items()):          
+    for item, value in filter(lambda x: (x[1] != self.__class__) and isInteresting(x[1]),self.__locals.items()):
       size = getSize(value)
 
       self.__log.write("%s\t%d\n" % (item,size))

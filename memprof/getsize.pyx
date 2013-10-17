@@ -45,10 +45,10 @@ def getSize(x):
     elif hasattr(x, '__iter__'):
       items = x
     
-      
-    for it in items:
-      if not isinstance(it,builtin) and isInteresting(it):
-        size += size_of(it)
-                    
+    if (set([type(x) for x in items]) - set(builtin)) != set():
+      for it in items:
+        if not isinstance(it,builtin) and isInteresting(it):
+          size += size_of(it)
+                        
     return size
   return size_of(x)
