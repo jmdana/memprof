@@ -77,13 +77,14 @@ class MemProf(object):
     if (event in ["call","return"] and frame.f_code.co_name == self.func.__name__) or self.__ticks >= self.__refresh:
       self.__ticks = 0
       self.__locals = dict(list(frame.f_locals.items()) + list(frame.f_globals.items()))
-      del self.__locals['__builtins__']
-      del self.__locals['__file__']
-      del self.__locals['__loader__']
-      del self.__locals['__cached__']
-      del self.__locals['__package__']
-      del self.__locals['__doc__']
-      del self.__locals['__name__']
+
+      self.__locals.pop('__builtins__',None)
+      self.__locals.pop('__loader__',None)
+      self.__locals.pop('__cached__',None)
+      self.__locals.pop('__package__',None)
+      self.__locals.pop('__doc__',None)
+      self.__locals.pop('__name__',None)
+      self.__locals.pop('__file__',None)
       self.checkMem()
     
     return self.tracer
