@@ -15,9 +15,9 @@
 # along with memprof.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-from setuptools import setup, Extension
 import sys
-from distutils.command.install_scripts import install_scripts
+from setuptools import setup, Extension
+from setuptools.command.easy_install import easy_install
 
 try:
   from Cython.Build import cythonize
@@ -32,21 +32,24 @@ except ImportError:
 getsize = Extension('memprof.getsize',
   sources = ['memprof/getsize.pyx'])
 
-install_scripts_dest = "%s/bin" % sys.prefix
-
 def read(fname):
   return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
-class md_install_scripts(install_scripts):
+class md_easy_install(easy_install):
   def run(self):
-    global install_scripts_dest
+    easy_install.run(self)
+    install_scripts_dest = filter(lambda x: x.endswith("mp_plot") and "EGG-INFO" not in x,self.outputs)
+    install_scripts_dest = os.path.dirname(install_scripts_dest[0]) if len(install_scripts_dest) else os.path.join(sys.prefix,"bin")    
     
-    install_scripts.run(self)
-
-    if "install" in self.distribution.command_options and 'install_scripts' in self.distribution.command_options['install']:
-      install_scripts_dest = self.distribution.command_options['install']['install_scripts'][1]
-      
-
+    if install_scripts_dest not in os.environ["PATH"]:
+      print("\n\n")
+      print("*" * 80)
+      print("mp_plot has been copied to:\n\n%s\n" % install_scripts_dest)
+      print("Which is NOT in your PATH! Please modify your PATH conveniently.")
+      print("*" * 80)
+      print("\n\n")
+    
+    
 setup(
   name = "memprof",
   version = "0.3.1",
@@ -57,7 +60,7 @@ setup(
   url = "http://jmdana.github.io/memprof/",
   packages=['memprof'],
   scripts=['scripts/mp_plot'],
-  cmdclass = {'install_scripts': md_install_scripts},
+  cmdclass = {'easy_install': md_easy_install},
   zip_safe=False,
   long_description=read('README.md'),
   classifiers=[
@@ -87,9 +90,4 @@ setup(
   test_suite = "testsuite",
 )
 
-print("\n\n")
-print("*" * 80)
-print("mp_plot has been copied to:\n\n%s\n\nPlease make sure that it is included in your PATH." % install_scripts_dest)
-print("*" * 80)
-print("\n\n")
 
