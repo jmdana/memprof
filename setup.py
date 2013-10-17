@@ -20,14 +20,14 @@ from setuptools import setup, Extension
 from setuptools.command.easy_install import easy_install
 
 try:
-  from Cython.Build import cythonize
+  from Cython.Distutils import build_ext
 except ImportError:
   from setuptools.command import easy_install
   import pkg_resources
   # Install cython
   easy_install.main(["Cython"])
   pkg_resources.require("Cython")
-  from Cython.Build import cythonize
+  from Cython.Distutils import build_ext
   
 getsize = Extension('memprof.getsize',
   sources = ['memprof/getsize.pyx'])
@@ -60,7 +60,7 @@ setup(
   url = "http://jmdana.github.io/memprof/",
   packages=['memprof'],
   scripts=['scripts/mp_plot'],
-  cmdclass = {'easy_install': md_easy_install},
+  cmdclass = {'easy_install': md_easy_install, 'build_ext': build_ext},
   zip_safe=False,
   long_description=read('README.md'),
   classifiers=[
@@ -83,7 +83,7 @@ setup(
       "Intended Audience :: Science/Research",
       "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
   ],
-  ext_modules=cythonize(getsize),
+  ext_modules=[getsize],
   requires=['argparse','matplotlib','cython'],
   install_requires=['argparse','matplotlib','cython'],
   provides=['memprof'],
