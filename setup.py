@@ -64,7 +64,7 @@ setup(
   zip_safe=False,
   long_description=read('README.md'),
   classifiers=[
-      "Development Status :: 4 - Beta",
+      "Development Status :: 5 - Production/Stable",
       "Topic :: Utilities",
       "Topic :: Software Development",
       "Programming Language :: Python",
