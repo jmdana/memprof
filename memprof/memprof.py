@@ -104,7 +104,7 @@ class MemProf(object):
    
     self.__log.write("%f\n" % from_start)
     
-    for item, value in filter(lambda x: (x[1] != self.__class__) and isInteresting(x[1]),self.__locals.items()):
+    for item, value in filter(lambda x: (x[1] is not self.__class__) and isInteresting(x[1]),self.__locals.items()):
       size = getSize(value)
 
       self.__log.write("%s\t%d\n" % (item,size))
