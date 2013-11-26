@@ -21,6 +21,7 @@ import operator
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+from matplotlib.backends.backend_agg import FigureCanvasAgg
 
 PY3 = sys.version > '3'
 
@@ -44,13 +45,14 @@ def gen_plot(logfile, threshold):
   cache = {}
   times = []
   
+  figure = plt.Figure()
+  canvas = FigureCanvasAgg(figure)
+
   name = os.path.splitext(logfile)[0]
   
   units,factor = get_units_factor(threshold)
-
-  plt.close()
-    
-  ax = plt.subplot(1,1,1)  
+   
+  ax = figure.add_subplot(1,1,1)  
   ax.set_xlabel('time (s)')
   ax.set_ylabel('memory (%s)' % units)
   ax.set_title('%s - memprof' % (name))
@@ -103,11 +105,11 @@ def gen_plot(logfile, threshold):
   gapx = (times[-1] - times[0])/40
   ax.set_xlim(times[0],times[-1] + gapx)
   
-  plt.legend(handles,labels)
-  
   box = ax.get_position()
   ax.set_position([box.x0, box.y0 + box.height * 0.2, box.width, box.height * 0.8])
-  plt.legend(bbox_to_anchor=(0.5,-0.12), loc="upper center", ncol=5,borderaxespad=0.)
+  figure.legend(handles,labels,bbox_to_anchor=(0.5,-0.12), loc="upper center", ncol=5,borderaxespad=0.)
     
-  plt.savefig("%s.png" % name)
+  canvas.print_figure("%s.png" % name)
+
+  return figure
       
