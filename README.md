@@ -92,5 +92,5 @@ etc.
 * List archives at http://groups.google.com/group/memprof
 
 ---
-Copyright 2013, Jose M. Dana
+Copyright 2013-2015, Jose M. Dana
 
