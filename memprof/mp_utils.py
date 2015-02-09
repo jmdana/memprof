@@ -31,7 +31,7 @@ GB = MB * 1024
 
 default_threshold = MB
 
-def get_units_factor(threshold):    
+def get_units_factor(threshold):
     if threshold < KB:
         return ("B", 1.)
     elif threshold < MB:
@@ -85,14 +85,14 @@ def gen_plot(logfile, threshold):
     f.close()
 
     if not cache.items():
-        print("\nNothing with more than %.2f %ss found!" % (threshold / factor,units))
+        print("\nNothing with more than %.2f %ss found!" % (threshold / factor, units))
         print("There is nothing to plot... Exiting")
         return
 
     for item, val in cache.items():
         # len(s) == len(t) has to be true
         s = val + [0] * (len(times) - len(val))
-        ax.plot(times, s, linewidth = 1.5, label=item)
+        ax.plot(times, s, linewidth=1.5, label=item)
 
     handles, labels = ax.get_legend_handles_labels()
     hl = sorted(zip(handles, labels), key=operator.itemgetter(1))
@@ -107,7 +107,7 @@ def gen_plot(logfile, threshold):
 
     box = ax.get_position()
     ax.set_position([box.x0, box.y0 + box.height * 0.2, box.width, box.height * 0.8])
-    figure.legend(handles,labels,bbox_to_anchor=(0.5,-0.12), loc="upper center", ncol=5,borderaxespad=0.)
+    figure.legend(handles, labels, bbox_to_anchor=(0.5, -0.12), loc="upper center", ncol=5, borderaxespad=0.)
 
     canvas.print_figure("%s.png" % name)
 

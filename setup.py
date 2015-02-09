@@ -40,8 +40,8 @@ def read(fname):
 class md_easy_install(easy_install):
     def run(self):
         easy_install.run(self)
-        install_scripts_dest = list(filter(lambda x: x.endswith("mp_plot") and "EGG-INFO" not in x,self.outputs))
-        install_scripts_dest = os.path.dirname(install_scripts_dest[0]) if len(install_scripts_dest) else os.path.join(sys.prefix,"bin")
+        install_scripts_dest = list(filter(lambda x: x.endswith("mp_plot") and "EGG-INFO" not in x, self.outputs))
+        install_scripts_dest = os.path.dirname(install_scripts_dest[0]) if len(install_scripts_dest) else os.path.join(sys.prefix, "bin")
 
         if install_scripts_dest not in os.environ["PATH"]:
             print("\n\n")

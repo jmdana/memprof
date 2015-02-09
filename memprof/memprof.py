@@ -38,7 +38,7 @@ def memprof(*args, **kwargs):
 
 
 class MemProf(object):
-    def __init__(self,func,threshold = default_threshold, plot = False):
+    def __init__(self, func, threshold=default_threshold, plot=False):
         self.func = func
         self.__locals = {}
         self.__start = -1
@@ -72,7 +72,7 @@ class MemProf(object):
 
         self.__ticks += 1
 
-        if (event in ["call","return"] and frame.f_code.co_name == self.func.__name__) or self.__ticks >= self.__refresh:
+        if (event in ["call", "return"] and frame.f_code.co_name == self.func.__name__) or self.__ticks >= self.__refresh:
             self.__ticks = 0
             self.__locals = dict(list(frame.f_locals.items()) + list(frame.f_globals.items()))
 
@@ -102,7 +102,7 @@ class MemProf(object):
 
         self.__log.write("%f\n" % from_start)
 
-        for item, value in filter(lambda x: (x[1] is not self.__class__) and isInteresting(x[1]),self.__locals.items()):
+        for item, value in filter(lambda x: (x[1] is not self.__class__) and isInteresting(x[1]), self.__locals.items()):
             size = getSize(value)
 
             self.__log.write("%s\t%d\n" % (item, size))
@@ -163,8 +163,8 @@ class MemProf(object):
 def main():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('-t','--threshold',type=int, default=default_threshold, action='store', help='threshold (default: %d bytes)' % default_threshold)
-    parser.add_argument('-p','--plot', action='store_true', default=False,help='Generate plots (default: False)')
+    parser.add_argument('-t', '--threshold', type=int, default=default_threshold, action='store', help='threshold (default: %d bytes)' % default_threshold)
+    parser.add_argument('-p', '--plot', action='store_true', default=False, help='Generate plots (default: False)')
 
     args, unknown = parser.parse_known_args()
 
