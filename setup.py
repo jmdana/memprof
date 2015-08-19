@@ -54,7 +54,7 @@ class md_easy_install(easy_install):
 
 setup(
     name="memprof",
-    version="0.3.3",
+    version="0.3.4",
     author="Jose M. Dana",
     description=("A memory profiler for Python. As easy as adding a decorator."),
     license="GNU General Public License v3 (GPLv3)",
