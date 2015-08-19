@@ -7,7 +7,7 @@ from .mp_utils import *
 if PY3:
     builtin = (int, float, str, complex)
 else:
-    builtin = (int, float, str, long, complex)
+    builtin = (int, float, str, long, complex, file)
 
 notinteresting = (
     types.ModuleType,
