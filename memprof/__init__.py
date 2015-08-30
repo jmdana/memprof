@@ -17,4 +17,7 @@
 from .memprof import *
 import pkg_resources
 
-__version__ = pkg_resources.get_distribution("memprof").version
+try:
+    __version__ = pkg_resources.get_distribution("memprof").version
+except pkg_resources.DistributionNotFound:
+    __version__ = "local"
