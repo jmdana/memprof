@@ -107,7 +107,7 @@ def gen_plot(logfile, threshold):
 
     box = ax.get_position()
     ax.set_position([box.x0, box.y0 + box.height * 0.2, box.width, box.height * 0.8])
-    figure.legend(handles, labels, bbox_to_anchor=(0.5, -0.12), loc="upper center", ncol=5, borderaxespad=0.)
+    figure.legend(handles, labels, bbox_to_anchor=(0.5, .12), loc="lower center", ncol=5, borderaxespad=0.)
 
     canvas.print_figure("%s.png" % name)
 
