@@ -38,8 +38,11 @@ def memprof(*args, **kwargs):
 
 
 class MemProf(object):
-    def __init__(self, func, threshold=default_threshold, plot=False):
+    def __init__(self, func, threshold=default_threshold, plot=False,
+                 funcname=None):
         self.func = func
+        if funcname is None:
+            funcname = self.func.__name__
         self.__locals = {}
         self.__start = -1
         self.__prev = -1
@@ -47,7 +50,7 @@ class MemProf(object):
         self.__refresh = 500000
         self.__ticks = 0
         self.__checkTimes = []
-        self.__logfile = "%s.log" % self.func.__name__
+        self.__logfile = "%s.log" % funcname
 
         self.__plot = self.func.__globals__["memprof_plot"]  if "memprof_plot" in self.func.__globals__ else plot
         self.threshold = self.func.__globals__["memprof_threshold"]  if "memprof_threshold" in self.func.__globals__ else threshold
