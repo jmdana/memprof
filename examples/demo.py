@@ -21,10 +21,16 @@ import time
 
 MB = 1024 * 1024
 
+@memprof
 class FooClass(object):
-    def __init__(self):
+    def __init__(self, limit):
         self.a = [1] * MB
         self.b = [1] * MB * 2
+
+        for _ in range(limit):
+            self.a.append(1)
+            self.b.append(1)
+            self.b.append(1)
 
 @memprof
 def bar(limit=10000):
@@ -56,13 +62,8 @@ def foo(limit=500000):
         elif i == (limit*3)/4:
             c = [1] * MB * 2
 
-@memprof
-def fooObject(limit=500000):
-    a = FooClass()
-
-    for i in range(limit):
-        a.a.append(1)
-        a.b.append(1)
+def fooObject(limit=3000000):
+    foo = FooClass(limit)
 
 
 foo()
