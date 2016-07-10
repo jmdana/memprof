@@ -19,6 +19,7 @@
 import sys
 import time
 import argparse
+import inspect
 import types
 
 from .mp_utils import *
@@ -28,8 +29,14 @@ def memprof(*args, **kwargs):
     def inner(func):
         return MemProf(func, *args, **kwargs)
 
-    # To allow @memprof with parameters
-    if len(args) and callable(args[0]):
+    if inspect.isclass(args[0]):
+        cls = args[0]
+        args = args[1:]
+        kwargs["funcname"] = cls.__name__
+        cls.__init__ = inner(cls.__init__)
+        return cls
+    elif callable(args[0]):
+        # To allow @memprof with parameters
         func = args[0]
         args = args[1:]
         return inner(func)

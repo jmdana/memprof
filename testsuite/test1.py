@@ -18,6 +18,9 @@ import unittest
 import os
 import sys
 
+sys.path.insert(0, "../memprof")
+from memprof import memprof
+
 class Test(unittest.TestCase):
     # Rough test: just run the example
     def test_demo(self):
@@ -27,3 +30,21 @@ class Test(unittest.TestCase):
         os.chdir(examples_path)
         import demo
         os.chdir(root)
+
+    def test_class(self):
+        """memprof works with classes"""
+        MB = 1024 * 1024
+
+        @memprof
+        class FooClass(object):
+            def __init__(self):
+                self.a = [1] * MB
+                self.b = [1] * MB * 2
+
+            def append(self, limit=500000):
+                for _ in range(limit):
+                    self.a.append(1)
+                    self.b.append(1)
+
+        foo = FooClass()
+        foo.append()
