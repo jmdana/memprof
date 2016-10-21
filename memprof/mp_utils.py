@@ -20,8 +20,8 @@ import operator
 
 import matplotlib
 matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-from matplotlib.backends.backend_agg import FigureCanvasAgg
+import matplotlib.pyplot as plt  # noqa
+from matplotlib.backends.backend_agg import FigureCanvasAgg  # noqa
 
 PY3 = sys.version > '3'
 
@@ -30,6 +30,7 @@ MB = KB * 1024
 GB = MB * 1024
 
 default_threshold = MB
+
 
 def get_units_factor(threshold):
     if threshold < KB:
@@ -40,6 +41,7 @@ def get_units_factor(threshold):
         return ("MB", MB)
     else:
         return ("GB", GB)
+
 
 def gen_plot(logfile, threshold):
     cache = {}
@@ -74,7 +76,7 @@ def gen_plot(logfile, threshold):
                 if len(cache[item]) < len(times):
                     cache[item][-1:-1] = [0] * (len(times) - len(cache[item]))
 
-        except ValueError as e:
+        except ValueError:
             if line == "RESTART":
                 ax.axvspan(times[-2], times[-1], facecolor='#000000', alpha=0.5)
                 ax.axvline(x=times[-2], color='#000000')
@@ -99,10 +101,10 @@ def gen_plot(logfile, threshold):
     handles, labels = zip(*hl)
 
     maxy = max(map(max, cache.values()))
-    gapy = (maxy - threshold/factor)/40
-    ax.set_ylim(max(0, threshold/factor - gapy), maxy + gapy)
+    gapy = (maxy - threshold / factor) / 40
+    ax.set_ylim(max(0, threshold / factor - gapy), maxy + gapy)
 
-    gapx = (times[-1] - times[0])/40
+    gapx = (times[-1] - times[0]) / 40
     ax.set_xlim(times[0], times[-1] + gapx)
 
     box = ax.get_position()
@@ -112,4 +114,3 @@ def gen_plot(logfile, threshold):
     canvas.print_figure("%s.png" % name)
 
     return figure
-
