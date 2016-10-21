@@ -34,6 +34,10 @@ Development
     cd memprof
     sudo python setup.py install
 
+or ::
+
+    sudo pip install git+https://github.com/jmdana/memprof
+
 Usage
 -----
 
