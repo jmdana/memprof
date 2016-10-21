@@ -16,15 +16,17 @@
 # You should have received a copy of the GNU General Public License
 # along with memprof.  If not, see <http://www.gnu.org/licenses/>.
 
-from memprof import *
+from memprof import memprof
 import time
 
 MB = 1024 * 1024
+
 
 class FooClass(object):
     def __init__(self):
         self.a = [1] * MB
         self.b = [1] * MB * 2
+
 
 @memprof
 def bar(limit=10000):
@@ -33,11 +35,13 @@ def bar(limit=10000):
     for i in range(limit):
         bar_a.append(1)
 
+
 @memprof
 def foo2():
-    a = [1] * MB
-    b = [1] * MB * 2
-    c = [1] * MB * 3
+    a = [1] * MB      # noqa
+    b = [1] * MB * 2  # noqa
+    c = [1] * MB * 3  # noqa
+
 
 @memprof
 def foo(limit=500000):
@@ -50,11 +54,12 @@ def foo(limit=500000):
         b.append(1)
         b.append(1)
 
-        if i == limit/2:
+        if i == limit / 2:
             del a[:]
             del c[:]
-        elif i == (limit*3)/4:
+        elif i == (limit * 3) / 4:
             c = [1] * MB * 2
+
 
 @memprof
 def fooObject(limit=500000):
