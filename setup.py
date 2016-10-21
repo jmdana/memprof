@@ -22,7 +22,7 @@ from setuptools.command.easy_install import easy_install
 try:
     from Cython.Distutils import build_ext
 except ImportError:
-    from setuptools.command import easy_install
+    from setuptools.command import easy_install  # noqa
     import pkg_resources
     # Install cython
     easy_install.main(["Cython"])
@@ -32,16 +32,21 @@ except ImportError:
 getsize = Extension(
     'memprof.getsize',
     sources=['memprof/getsize.pyx']
-    )
+)
+
 
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
+
 class md_easy_install(easy_install):
+
     def run(self):
         easy_install.run(self)
-        install_scripts_dest = list(filter(lambda x: x.endswith("mp_plot") and "EGG-INFO" not in x, self.outputs))
-        install_scripts_dest = os.path.dirname(install_scripts_dest[0]) if len(install_scripts_dest) else os.path.join(sys.prefix, "bin")
+        install_scripts_dest = list(filter(lambda x: x.endswith(
+            "mp_plot") and "EGG-INFO" not in x, self.outputs))
+        install_scripts_dest = os.path.dirname(install_scripts_dest[0]) if len(
+            install_scripts_dest) else os.path.join(sys.prefix, "bin")
 
         if install_scripts_dest not in os.environ["PATH"]:
             print("\n\n")
@@ -56,7 +61,7 @@ setup(
     name="memprof",
     version="0.3.4",
     author="Jose M. Dana",
-    description=("A memory profiler for Python. As easy as adding a decorator."),
+    description="A memory profiler for Python. As easy as adding a decorator.",
     license="GNU General Public License v3 (GPLv3)",
     keywords="memory usage profiler decorator variables charts plots graphical",
     url="http://jmdana.github.io/memprof/",
@@ -91,5 +96,3 @@ setup(
     provides=['memprof'],
     test_suite="testsuite",
 )
-
-
