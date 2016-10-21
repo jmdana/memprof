@@ -50,7 +50,7 @@ you want to profile: ::
 And importing the module just by including the line below at the
 beginning of your Python file: ::
 
-    from memprof import *
+    from memprof import memprof
 
 Now you can run as usual and logfiles with the names of your methods
 will be created (e.g. ``foo.log``).
