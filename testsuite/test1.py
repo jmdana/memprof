@@ -18,6 +18,7 @@ import unittest
 import os
 import sys
 
+
 class Test(unittest.TestCase):
     # Rough test: just run the example
     def test_demo(self):
@@ -25,5 +26,5 @@ class Test(unittest.TestCase):
         examples_path = os.path.join(os.getcwd(), "examples")
         sys.path.append(examples_path)
         os.chdir(examples_path)
-        import demo
+        import demo  # noqa
         os.chdir(root)
