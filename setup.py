@@ -64,7 +64,7 @@ setup(
     scripts=['scripts/mp_plot'],
     cmdclass={'easy_install': md_easy_install, 'build_ext': build_ext},
     zip_safe=False,
-    long_description=read('README.md'),
+    long_description=read('README.rst'),
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Topic :: Utilities",
