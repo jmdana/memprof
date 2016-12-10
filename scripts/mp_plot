@@ -40,4 +40,3 @@ if __name__ == '__main__':
             gen_plot(logfile, args.threshold)
         except IOError as e:
             print(e)
-

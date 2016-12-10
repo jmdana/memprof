@@ -21,8 +21,9 @@ import time
 import argparse
 import types
 
-from .mp_utils import *
+from .mp_utils import *  # noqa
 from .getsize import getSize, isInteresting
+
 
 def memprof(*args, **kwargs):
     def inner(func):
@@ -49,8 +50,8 @@ class MemProf(object):
         self.__checkTimes = []
         self.__logfile = "%s.log" % self.func.__name__
 
-        self.__plot = self.func.__globals__["memprof_plot"]  if "memprof_plot" in self.func.__globals__ else plot
-        self.threshold = self.func.__globals__["memprof_threshold"]  if "memprof_threshold" in self.func.__globals__ else threshold
+        self.__plot = self.func.__globals__["memprof_plot"] if "memprof_plot" in self.func.__globals__ else plot
+        self.threshold = self.func.__globals__["memprof_threshold"] if "memprof_threshold" in self.func.__globals__ else threshold
 
         self.__units, self.__factor = get_units_factor(self.threshold)
 
@@ -112,7 +113,7 @@ class MemProf(object):
 
                 try:
                     prev = self.__cache[item][-1]
-                except (IndexError, KeyError) as e:
+                except (IndexError, KeyError):
                     prev = 0
 
                 self.__cache.setdefault(item, []).append(size)
@@ -120,7 +121,7 @@ class MemProf(object):
                 if len(self.__cache[item]) < len(self.__checkTimes):
                     self.__cache[item][-1:-1] = [0] * (len(self.__checkTimes) - len(self.__cache[item]))
 
-                print("%s: %.2f %s%s" % (item, size, self.__units, "\t(%s%.2f %s)" % ("+" if size-prev > 0 else "", size-prev, self.__units) if prev > 0 else ""))
+                print("%s: %.2f %s%s" % (item, size, self.__units, "\t(%s%.2f %s)" % ("+" if size - prev > 0 else "", size - prev, self.__units) if prev > 0 else ""))
 
     def __call__(self, *args, **kwargs):
         print("memprof starting (min. size: %d)" % (self.threshold))
@@ -159,6 +160,7 @@ class MemProf(object):
         print("memprof done")
 
         return res
+
 
 def main():
     parser = argparse.ArgumentParser()
