@@ -22,10 +22,10 @@ from setuptools.command.easy_install import easy_install
 try:
     from Cython.Distutils import build_ext
 except ImportError:
-    from setuptools.command import easy_install  # noqa
+    from setuptools.command import easy_install as easy_install_module  # noqa
     import pkg_resources
     # Install cython
-    easy_install.main(["Cython"])
+    easy_install_module.main(["Cython"])
     pkg_resources.require("Cython")
     from Cython.Distutils import build_ext
 
