@@ -108,8 +108,8 @@ def gen_plot(logfile, threshold):
     ax.set_xlim(times[0], times[-1] + gapx)
 
     box = ax.get_position()
-    ax.set_position([box.x0, box.y0 + box.height * 0.2, box.width, box.height * 0.8])
-    figure.legend(handles, labels, bbox_to_anchor=(0.5, .12), loc="lower center", ncol=5, borderaxespad=0.)
+    ax.set_position([box.x0, box.y0 + box.height * 0.15 , box.width, box.height * 0.85])
+    figure.legend(handles, labels, bbox_to_anchor=(0.5, 0.13), loc="upper center", ncol=5, borderaxespad=0.0)
 
     canvas.print_figure("%s.png" % name)
 
