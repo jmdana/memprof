@@ -127,4 +127,4 @@ Mailing list
 
 --------------
 
-Copyright 2013-2015, Jose M. Dana
+Copyright 2013-2019, Jose M. Dana
